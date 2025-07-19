@@ -71,6 +71,11 @@ def login():
     }, app.config['SECRET_KEY'])
     return jsonify({'token': token})
 
+@app.route('/assignments', methods=['GET'])
+@token_required
+def get_assignments(current_user):
+    return jsonify(list(assignments.values()))
+
 @app.route('/assignments', methods=['POST'])
 @token_required
 @teacher_required
@@ -78,6 +83,7 @@ def create_assignment(current_user):
     data = request.get_json()
     assignment_id = str(len(assignments) + 1)
     assignments[assignment_id] = {
+        'id': assignment_id,
         'title': data['title'],
         'description': data['description'],
         'due_date': data['due_date'],

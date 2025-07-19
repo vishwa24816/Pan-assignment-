@@ -1,21 +1,15 @@
 body {
-    font-family: sans-serif;
-    margin: 2em;
+    background-color: #f8f9fa;
 }
 
-input, textarea, select, button {
-    display: block;
-    margin-bottom: 1em;
-    padding: 0.5em;
-    width: 300px;
+.container {
+    max-width: 800px;
 }
 
-button {
-    cursor: pointer;
+.card {
+    margin-bottom: 20px;
 }
 
-#submissions-list {
-    margin-top: 1em;
-    border: 1px solid #ccc;
-    padding: 1em;
+#submissions-list .card {
+    margin-top: 15px;
 }

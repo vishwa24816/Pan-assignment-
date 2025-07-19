@@ -13,6 +13,9 @@ async function signup() {
 
     const data = await res.json();
     alert(data.message);
+    if (res.ok) {
+        getAssignments();
+    }
 }
 
 async function login() {
@@ -36,13 +39,36 @@ async function login() {
 }
 
 function showDashboards() {
+    document.getElementById('auth-forms').style.display = 'none';
+    document.getElementById('user-dashboards').style.display = 'block';
     const decodedToken = JSON.parse(atob(token.split('.')[1]));
     if (decodedToken.role === 'teacher') {
         document.getElementById('teacher-dashboard').style.display = 'block';
-        document.getElementById('view-submissions-dashboard').style.display = 'block';
     } else {
         document.getElementById('student-dashboard').style.display = 'block';
     }
+    getAssignments();
+}
+
+async function getAssignments() {
+    const res = await fetch('/assignments', {
+        headers: { 'x-access-token': token }
+    });
+    const data = await res.json();
+    const list = document.getElementById('assignments-list');
+    list.innerHTML = '';
+    data.forEach(assignment => {
+        const item = document.createElement('div');
+        item.className = 'card mb-2';
+        item.innerHTML = `
+            <div class="card-body">
+                <h5 class="card-title">${assignment.title} (ID: ${assignment.id})</h5>
+                <p class="card-text">${assignment.description}</p>
+                <p class="card-text"><small class="text-muted">Due: ${assignment.due_date}</small></p>
+            </div>
+        `;
+        list.appendChild(item);
+    });
 }
 
 async function createAssignment() {
@@ -90,13 +116,26 @@ async function viewSubmissions() {
     const list = document.getElementById('submissions-list');
     list.innerHTML = '';
 
-    if (data.message) {
-        list.innerHTML = data.message;
-    } else {
-        data.forEach(sub => {
-            const item = document.createElement('div');
-            item.innerHTML = `<b>${sub.student}:</b><p>${sub.content}</p>`;
-            list.appendChild(item);
-        });
+    if (res.status === 404) {
+        list.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+        return;
     }
+
+    if (data.length === 0) {
+        list.innerHTML = '<div class="alert alert-info">No submissions for this assignment yet.</div>';
+        return;
+    }
+
+    data.forEach(sub => {
+        const item = document.createElement('div');
+        item.className = 'card mb-2';
+        item.innerHTML = `
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">${sub.student}</h6>
+                <p class="card-text">${sub.content}</p>
+                <p class="card-text"><small class="text-muted">Submitted on: ${new Date(sub.submission_date).toLocaleString()}</small></p>
+            </div>
+        `;
+        list.appendChild(item);
+    });
 }
