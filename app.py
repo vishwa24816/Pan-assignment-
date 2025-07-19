@@ -4,14 +4,12 @@ import jwt
 from datetime import datetime, timedelta
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
-app.config['SECRET_KEY'] = 'your_secret_key'  # Change this in a real app
+app.config['SECRET_KEY'] = 'your_secret_key' 
 
-# Dummy database
 users = {}
 assignments = {}
 submissions = {}
 
-# Helper functions for JWT
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -44,7 +42,6 @@ def student_required(f):
         return f(current_user, *args, **kwargs)
     return decorated
 
-# Routes
 @app.route('/auth/signup', methods=['POST'])
 def signup():
     data = request.get_json()
