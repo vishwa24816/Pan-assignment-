@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EdTech Assignment Tracker</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>EdTech Assignment Tracker</h1>
+
+    <!-- Login/Signup -->
+    <div id="auth-forms">
+        <h2>Login / Signup</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <select id="role">
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+        </select>
+        <button onclick="signup()">Signup</button>
+        <button onclick="login()">Login</button>
+    </div>
+
+    <hr>
+
+    <!-- Teacher: Create Assignment -->
+    <div id="teacher-dashboard" style="display:none;">
+        <h2>Create Assignment</h2>
+        <input type="text" id="assignment-title" placeholder="Title">
+        <textarea id="assignment-desc" placeholder="Description"></textarea>
+        <input type="date" id="assignment-due">
+        <button onclick="createAssignment()">Create Assignment</button>
+    </div>
+
+    <!-- Student: Submit Assignment -->
+    <div id="student-dashboard" style="display:none;">
+        <h2>Submit Assignment</h2>
+        <input type="text" id="submit-assignment-id" placeholder="Assignment ID">
+        <textarea id="submission-content" placeholder="Your submission"></textarea>
+        <button onclick="submitAssignment()">Submit</button>
+    </div>
+
+    <!-- Teacher: View Submissions -->
+    <div id="view-submissions-dashboard" style="display:none;">
+        <h2>View Submissions</h2>
+        <input type="text" id="view-assignment-id" placeholder="Assignment ID">
+        <button onclick="viewSubmissions()">View Submissions</button>
+        <div id="submissions-list"></div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
